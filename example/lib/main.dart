@@ -48,7 +48,8 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin {
+class _DashboardScreenState extends State<DashboardScreen>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _rotationController;
   bool _isProcessing = false;
   String _performanceResult = 'Idle';
@@ -74,7 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     setState(() {
       _performanceResult = 'Running synchronous block... (UI Freezing)';
     });
-    
+
     // Busy loop to block the main isolate
     final stopwatch = Stopwatch()..start();
     while (stopwatch.elapsedMilliseconds < milliseconds) {
@@ -98,7 +99,8 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
     setState(() {
       _isProcessing = false;
-      _performanceResult = 'Compute finished smoothly (Calculated $loops loops).';
+      _performanceResult =
+          'Compute finished smoothly (Calculated $loops loops).';
     });
   }
 
@@ -132,7 +134,8 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🕵️‍♂️ Jank Scout Dashboard', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Jank Scout Dashboard',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: const Color(0xFF161B22),
         elevation: 0,
         centerTitle: true,
@@ -151,13 +154,17 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     children: [
                       const Text(
                         'Visual Frame Indicator',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       const SizedBox(height: 8),
                       const Text(
                         'This ring rotates continuously. Stalling the event loop freezes the ring, while background isolates keep it spinning smoothly.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Color(0xFF8B949E), fontSize: 13),
+                        style:
+                            TextStyle(color: Color(0xFF8B949E), fontSize: 13),
                       ),
                       const SizedBox(height: 24),
                       AnimatedBuilder(
@@ -191,7 +198,9 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                       const SizedBox(height: 16),
                       Text(
                         'Telemetry Status: $_performanceResult',
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF58A6FF)),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF58A6FF)),
                       ),
                     ],
                   ),
@@ -207,7 +216,10 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     children: [
                       const Text(
                         'Simulate Performance Jank (UI Block)',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
@@ -215,10 +227,13 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                           backgroundColor: const Color(0xFFD29922),
                           foregroundColor: Colors.black,
                           minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
                         ),
-                        onPressed: _isProcessing ? null : () => _simulateJank(80),
-                        child: const Text('Trigger Severe Jank (80ms UI Block)', style: TextStyle(fontWeight: FontWeight.bold)),
+                        onPressed:
+                            _isProcessing ? null : () => _simulateJank(80),
+                        child: const Text('Trigger Severe Jank (80ms UI Block)',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -234,12 +249,16 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     children: [
                       const Text(
                         'Remediated Concurrent execution',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       const SizedBox(height: 8),
                       const Text(
                         'Run the same 80ms CPU-heavy task off the main thread. The rotation spinner will continue smoothly without dropping frames.',
-                        style: TextStyle(color: Color(0xFF8B949E), fontSize: 13),
+                        style:
+                            TextStyle(color: Color(0xFF8B949E), fontSize: 13),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
@@ -247,10 +266,14 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                           backgroundColor: const Color(0xFF3FB950),
                           foregroundColor: Colors.white,
                           minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
                         ),
-                        onPressed: _isProcessing ? null : () => _remediateWithCompute(80),
-                        child: const Text('Run via compute() wrapper', style: TextStyle(fontWeight: FontWeight.bold)),
+                        onPressed: _isProcessing
+                            ? null
+                            : () => _remediateWithCompute(80),
+                        child: const Text('Run via compute() wrapper',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
@@ -258,10 +281,14 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                           backgroundColor: const Color(0xFF58A6FF),
                           foregroundColor: Colors.white,
                           minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
                         ),
-                        onPressed: _isProcessing ? null : () => _remediateWithManualIsolate(80),
-                        child: const Text('Run via manual Isolate.spawn()', style: TextStyle(fontWeight: FontWeight.bold)),
+                        onPressed: _isProcessing
+                            ? null
+                            : () => _remediateWithManualIsolate(80),
+                        child: const Text('Run via manual Isolate.spawn()',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -277,7 +304,10 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     children: [
                       const Text(
                         'Navigator Attribution Test',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       const SizedBox(height: 16),
                       OutlinedButton(
@@ -285,12 +315,14 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                           side: const BorderSide(color: Color(0xFF58A6FF)),
                           foregroundColor: const Color(0xFF58A6FF),
                           minimumSize: const Size.fromHeight(50),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, '/details');
                         },
-                        child: const Text('Push Details Screen', style: TextStyle(fontWeight: FontWeight.bold)),
+                        child: const Text('Push Details Screen',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
@@ -328,7 +360,8 @@ class DetailsScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.layers_outlined, size: 72, color: Color(0xFFBC8CFF)),
+              const Icon(Icons.layers_outlined,
+                  size: 72, color: Color(0xFFBC8CFF)),
               const SizedBox(height: 16),
               const Text(
                 'Route: /details',
@@ -340,7 +373,8 @@ class DetailsScreen extends StatelessWidget {
                   backgroundColor: const Color(0xFFF85149),
                   foregroundColor: Colors.white,
                   minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: () => _simulateJank(80),
                 child: const Text('Trigger Jank here (80ms UI Block)'),
