@@ -1,4 +1,9 @@
+## 0.0.3
+
+* Fixed absolute local file path for LICENSE link in README.md to be a relative path.
+
 ## 0.0.2
+
 
 * Added package topics to pubspec metadata.
 * Fixed insecure HTTP link warning in README.md.

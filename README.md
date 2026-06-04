@@ -152,4 +152,4 @@ Jank Scout is created and maintained by **Muhammad Omar**.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](file:///Users/muhammadomar/Documents/projects/jank_scout/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
