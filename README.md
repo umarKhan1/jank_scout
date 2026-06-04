@@ -131,6 +131,25 @@ Jank Scout separates performance bottlenecks into the two primary execution doma
 
 ---
 
+## Contributing
+
+Contributions are welcome! If you encounter any bugs, have feature requests, or want to improve the codebase:
+
+1. **Reporting Bugs:** Please open an issue on the GitHub repository detailing the problem, your Flutter environment, and steps to reproduce.
+2. **Submitting Pull Requests:** Fork the repository, create a descriptive branch, implement your changes (ensuring `flutter analyze` passes with zero issues), and open a pull request.
+3. **Local Testing:** Use the included `example/` project to verify modifications and test performance timings under both synchronous blocks and isolate concurrency.
+
+---
+
+## Maintainer
+
+Jank Scout is created and maintained by **Muhammad Omar**. 
+
+* **LinkedIn:** [linkedin.com/in/muhammad-omar-0335](https://www.linkedin.com/in/muhammad-omar-0335/)
+* **Website:** [momarkhan.com](http://momarkhan.com)
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](file:///Users/muhammadomar/Documents/projects/jank_scout/LICENSE) file for details.
