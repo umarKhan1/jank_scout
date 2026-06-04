@@ -143,10 +143,10 @@ Contributions are welcome! If you encounter any bugs, have feature requests, or 
 
 ## Maintainer
 
-Jank Scout is created and maintained by **Muhammad Omar**. 
+Jank Scout is created and maintained by **Muhammad Omar**.
 
-* **LinkedIn:** [linkedin.com/in/muhammad-omar-0335](https://www.linkedin.com/in/muhammad-omar-0335/)
-* **Website:** [momarkhan.com](http://momarkhan.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Muhammad_Omar-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/muhammad-omar-0335/)
+[![Website](https://img.shields.io/badge/Website-momarkhan.com-12100E?style=flat-square&logo=google-chrome&logoColor=white)](http://momarkhan.com)
 
 ---
 
