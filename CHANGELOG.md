@@ -1,4 +1,10 @@
+## 0.0.2
+
+* Added package topics to pubspec metadata.
+* Fixed insecure HTTP link warning in README.md.
+
 ## 0.0.1
+
 
 * Initial release of Jank Scout.
 * Frame timing drop interception via native `SchedulerBinding.instance.addTimingsCallback`.
