@@ -1,56 +1,53 @@
-# jank_scout
+# Jank Scout
 
-[![Pub Version](https://img.shields.io/badge/pub-v0.0.1-blue.svg)](https://pub.dev/packages/jank_scout)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Flutter SDK](https://img.shields.io/badge/flutter-v3.0.0+-blue.svg)](https://flutter.dev)
+Jank Scout is a lightweight, high-performance frame drop interception and telemetry package built for local Flutter development. It passively monitors rendering pipeline events, identifies frame timing drops that overrun the frame budget, and formats diagnostic telemetry reports into the developer console.
 
-A highly performance-optimized, zero-dependency frame drop (jank) interception package for local Flutter development. 
-
-`jank_scout` passively monitors the rendering pipeline of your application, detects frames that breach their target render budget, attributes them to the active navigator screen, and prints a detailed console breakdown—**without using intrusive UI overlays and without relying on heavy cloud-based APMs**.
+Unlike traditional APM packages or UI overlay extensions, Jank Scout is built to operate passively, cleanly, and safely.
 
 ---
 
-## 🚀 Key Design Philosophies
+## Technical Differences and Key Capabilities
 
-1. **Zero UI Intrusion:** No floating widgets, charts, or graphs cluttering your app's interface. Performance metrics stay where they belong: in the development console.
-2. **Manual Mastery (No CodeGen):** Written purely and explicitly in Dart. No fragile build runners, serialization libraries, or annotation processing required.
-3. **Zero Third-Party Dependencies:** Relying exclusively on native APIs provided by the Flutter SDK. A completely clean and safe dependency tree.
-4. **Production Asset Safety:** All registration hooks and active tracking calls are wrapped inside compile-time `assert` guards. When you compile a release build (`flutter build --release`), the entire package execution path is tree-shaken and **completely self-destructs**, leaving absolute zero runtime overhead or binary size impact.
+1. Passive Terminal Telemetry: There are no floating charts, graph windows, or overlay buttons blocking your touch boundaries or layout calculations. All diagnostics stream to the development console.
+2. Compile-Time Production Safety: Every core monitoring route, callback hook, and telemetry string builder is wrapped inside compilation assert boundaries. When compiling release builds, the entire package implementation is tree-shaken by the compiler, leaving zero execution path overhead, zero background thread activity, and zero binary size bloat.
+3. Zero Third-Party Dependencies: Built completely using native Flutter SDK binding callbacks. It introduces no external dependencies to your project tree, preventing package-version conflicts.
+4. Bottleneck Remediation Guidance: Automatically divides latency reports into UI Thread (CPU Build) and Raster Thread (GPU) executions, providing dynamic structural diagnostic explanations to guide performance remediation.
+5. Telemetry Cooldown and Noise Suppression: Implements a 4ms threshold buffer to ignore minor hardware jitter, paired with a 2.5-second logging cooldown per route to eliminate terminal log flooding.
 
 ---
 
-## 📦 Installation
+## Installation
 
-Add `jank_scout` to your project's `pubspec.yaml`:
+Add jank_scout to the dependency list in your project pubspec.yaml file:
 
 ```yaml
 dependencies:
   jank_scout:
-    path: # or version constraint if hosted on pub.dev
+    path: /path/to/jank_scout
 ```
 
-Then run `flutter pub get`.
+Then run the package installation command:
+
+```bash
+flutter pub get
+```
 
 ---
 
-## 🛠️ Quick Start
+## Quick Start
 
-### 1. Initialize the Monitor
+### 1. Initialize the Telemetry Engine
 
-Call `JankScout.initialize()` in your application's `main()` entrypoint. 
-
-> ⚠️ **Important:** Make sure to call `WidgetsFlutterBinding.ensureInitialized()` before initializing `JankScout`.
+Initialize the JankScout controller inside your application main entry function. Ensure that WidgetsFlutterBinding.ensureInitialized has been executed beforehand.
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:jank_scout/jank_scout.dart';
 
 void main() {
-  // 1. Ensure bindings are ready
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 2. Initialize JankScout with target device FPS
-  // Supports high-refresh-rate displays (e.g. 120 FPS / 8.33ms budget)
+  // Initialize JankScout targeting the device refresh rate (e.g., 60 FPS)
   JankScout.initialize(targetFps: 60.0);
 
   runApp(const MyApp());
@@ -59,7 +56,7 @@ void main() {
 
 ### 2. Configure Navigator Attribution
 
-Add the `JankScoutObserver` to your root `MaterialApp`'s `navigatorObservers` array. This enables the engine to dynamically attribute frame drops to the active screen.
+Add JankScoutObserver to your MaterialApp navigatorObservers list to enable route-level telemetry mapping.
 
 ```dart
 class MyApp extends StatelessWidget {
@@ -68,8 +65,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Jank Scout Demo',
-      // Register the observer
+      title: 'Performance Testing App',
       navigatorObservers: [JankScoutObserver()],
       initialRoute: '/',
       routes: {
@@ -83,37 +79,39 @@ class MyApp extends StatelessWidget {
 
 ---
 
-## 📊 Terminal Output Showcase
+## Telemetry Report Format
 
-When a frame drop occurs (e.g., rendering takes 28ms on a 60 FPS target where the budget is 16.67ms), `jank_scout` outputs a beautiful, colorized warning card to your terminal:
+When a frame overrun is captured, a structured ASCII telemetry card is printed to the console:
 
 ```text
-┌─── [JANK SCOUT DETECTED FRAME DROP] ───────────────────────────
-│ Screen: /details
-│ Budget: 16.67 ms (Target FPS: 60)
-│ Total: 28.42 ms (+11.75 ms / 170% of budget)
-│ Timeline: [████████████████░░░░]
-├─ Pipeline Breakdowns:
-│   • UI Thread (CPU Build):   18.12 ms
-│   • Raster Thread (GPU):    10.30 ms
-└────────────────────────────────────────────────────────────────
++----------------------------------------------------------------------+
+| TELEMETRY REPORT: [PIPELINE CRITICAL INTERRUPT]
++----------------------------------------------------------------------+
+| Target Route: /details
+| Budget: 16.67 ms (Target FPS: 60)
+| Frame Render Time: 76.50 ms (Overrun: 358.9%, +59.83 ms)
+| Thread Breakdowns:
+|   - UI Thread (CPU Build):  68.20 ms
+|   - Raster Thread (GPU):   8.30 ms
++----------------------------------------------------------------------+
+| Bottleneck Analysis:
+| BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.
++----------------------------------------------------------------------+
 ```
 
 ---
 
-## 🧠 Under the Hood: The Flutter Rendering Pipeline
+## Architectural Breakdown
 
-To help you diagnose the root cause of jank, `jank_scout` breaks down the frame duration into the two critical phases of the Flutter rendering engine:
+Jank Scout separates bottlenecks into two primary threads:
 
-| Thread / Phase | Description | Common Bottlenecks |
+| Pipeline Thread | Description | Common Bottlenecks |
 | :--- | :--- | :--- |
-| **UI Thread (CPU Build)** | Executes all Dart code, parses layouts, constructs widget trees, and produces layer trees. | • Complex layouts or deep widget trees.<br>• Performing heavy compute operations directly on the main isolate.<br>• Unoptimized state management triggering unnecessary subtree rebuilds. |
-| **Raster Thread (GPU)** | Receives layer trees from the UI thread and translates them into GPU commands (using Skia or Impeller), uploading textures and rasterizing. | • Expensive operations like nested clipping, opacity overlays, or custom shaders.<br>• Large asset texture loading.<br>• High numbers of `saveLayer` calls. |
-
-*Note: Since the UI thread and Raster thread run concurrently in a pipelined fashion (UI thread processes frame N while Raster thread renders frame N-1), a slow-down in either thread will trigger a frame drop.*
+| UI Thread (CPU Build) | Executes Dart code, widget tree reconstructions, layout measurements, and painting layers. | Excessive operations in build methods, synchronous JSON parsing, or heavy business logic blocking the isolate event loop. |
+| Raster Thread (GPU) | Converts paint layers into GPU instructions (via Skia or Impeller) and draws them. | Complex clips, nested saveLayers, texture caching issues, or rendering massive image assets. |
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License. See LICENSE file for details.
