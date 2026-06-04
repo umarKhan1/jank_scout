@@ -1,8 +1,9 @@
 # Jank Scout
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Platform Support](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20macos%20%7C%20web-blue.svg)](https://flutter.dev)
-[![Flutter SDK](https://img.shields.io/badge/flutter-v3.0.0+-blue.svg)](https://flutter.dev)
+[![Flutter compatibility](https://img.shields.io/badge/flutter-v3.0.0+-blue?style=flat)](https://flutter.dev)
+[![Platforms](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20macos%20%7C%20web-blue?style=flat)](https://flutter.dev)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat)](https://opensource.org/licenses/MIT)
+[![Dependencies](https://img.shields.io/badge/dependencies-zero-success?style=flat)](https://github.com/umarKhan1/jank_scout)
 
 Jank Scout is a lightweight, high-performance frame drop interception and telemetry package built for local Flutter development. It passively monitors rendering pipeline events, identifies frame timing drops that overrun the frame budget, and formats diagnostic telemetry reports into the developer console.
 
@@ -11,9 +12,18 @@ Jank Scout is a lightweight, high-performance frame drop interception and teleme
 
 ---
 
+## Why Jank Scout? (The Problem It Solves)
+
+Modern Flutter performance profiling typically forces developers to choose between two sub-optimal approaches:
+
+* **VS. Flutter DevTools:** While powerful, DevTools requires manual setup, launching separate browser tabs, keeping web sockets connected, and explicitly recording performance sessions. It is an active debugging utility rather than a passive, continuous checker. Jank Scout requires **zero browser tabs** and monitors your app passively, sending automated telemetry straight to your terminal as you develop.
+* **VS. Production APMs (e.g., Sentry, Firebase Performance):** Heavy production performance monitoring frameworks are designed for live user monitoring. They add runtime overhead, make blocking network requests, introduce heavy dependency trees, and increase your final app size. Jank Scout is a local-only tool that uses native framework callbacks, has **zero package dependencies**, and **completely self-destructs (100% tree-shaken out)** during release compilation, leaving absolutely zero runtime or binary bloat.
+
+---
+
 ## Technical Differences and Key Capabilities
 
-* **Passive Terminal Telemetry:** There are no floating charts, graph windows, or overlay buttons blocking your touch boundaries or layout calculations. All diagnostics stream directly to the development console to keep your test environment clean.
+* **Passive Terminal Telemetry:** There are no floating charts, graph windows, or overlay widgets blocking your touch boundaries or layout calculations. All diagnostics stream directly to the development console to keep your test environment clean.
 * **Compile-Time Production Safety:**
   > [!IMPORTANT]
   > Every core monitoring route, callback hook, and telemetry string builder is wrapped inside strict compilation `assert` boundaries. When compiling release builds, the entire package implementation is completely tree-shaken by the compiler—leaving zero execution path overhead, zero background thread activity, and zero binary size bloat.
@@ -94,7 +104,7 @@ When a frame overrun is captured, a structured ASCII telemetry card is printed t
 
 ```text
 +----------------------------------------------------------------------+
-| TELEMETRY REPORT:  [PIPELINE CRITICAL INTERRUPT]
+| TELEMETRY REPORT: 🚨 [PIPELINE CRITICAL INTERRUPT]
 +----------------------------------------------------------------------+
 | Target Route: /details
 | Budget: 16.67 ms (Target FPS: 60)
@@ -104,7 +114,7 @@ When a frame overrun is captured, a structured ASCII telemetry card is printed t
 |   - Raster Thread (GPU):   8.30 ms
 +----------------------------------------------------------------------+
 | Bottleneck Analysis:
-| X BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.
+| ❌ BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.
 +----------------------------------------------------------------------+
 ```
 
