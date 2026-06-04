@@ -29,14 +29,13 @@ Add `jank_scout` to the dependency list in your project's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  jank_scout:
-    path: /path/to/jank_scout
+  jank_scout: ^0.0.1
 ```
 
-Then, fetch the package from your terminal:
+Or install it directly from your terminal:
 
 ```bash
-flutter pub get
+flutter pub add jank_scout
 ```
 
 ---
@@ -95,7 +94,7 @@ When a frame overrun is captured, a structured ASCII telemetry card is printed t
 
 ```text
 +----------------------------------------------------------------------+
-| TELEMETRY REPORT: 🚨 [PIPELINE CRITICAL INTERRUPT]
+| TELEMETRY REPORT:  [PIPELINE CRITICAL INTERRUPT]
 +----------------------------------------------------------------------+
 | Target Route: /details
 | Budget: 16.67 ms (Target FPS: 60)
@@ -105,7 +104,7 @@ When a frame overrun is captured, a structured ASCII telemetry card is printed t
 |   - Raster Thread (GPU):   8.30 ms
 +----------------------------------------------------------------------+
 | Bottleneck Analysis:
-| ❌ BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.
+| X BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.
 +----------------------------------------------------------------------+
 ```
 
