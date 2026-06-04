@@ -54,7 +54,7 @@ class LoggerUtility {
       // 3. Classification Labels & Calculations
       final double excessMs = totalRenderMs - frameBudgetMs;
       final double overrunPct = (excessMs / frameBudgetMs) * 100.0;
-      
+
       final String classification = overrunPct <= 50.0
           ? '⚠️ [PERFORMANCE DEGRADATION]'
           : '🚨 [PIPELINE CRITICAL INTERRUPT]';
@@ -62,26 +62,36 @@ class LoggerUtility {
       // 4. Root-Cause Analysis Engine
       String bottleneckAdvice;
       if (cpuBuildMs > gpuRasterMs) {
-        bottleneckAdvice = '❌ BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.';
+        bottleneckAdvice =
+            '❌ BOTTLENECK: UI Thread (CPU Boundary). Diagnostic: Excessive execution cycle detected on the Dart isolate runtime loop. Remediate by auditing synchronous serialization, unoptimized layout passes, or high-frequency state emissions violating state boundary conditions.';
       } else {
-        bottleneckAdvice = '❌ BOTTLENECK: Raster Thread (GPU Boundary). Diagnostic: Layer tree rendering budget exceeded. Remediate by auditing expensive composition passes, unindexed clipping boundaries, or raw texture memory allocations.';
+        bottleneckAdvice =
+            '❌ BOTTLENECK: Raster Thread (GPU Boundary). Diagnostic: Layer tree rendering budget exceeded. Remediate by auditing expensive composition passes, unindexed clipping boundaries, or raw texture memory allocations.';
       }
 
       // 5. Minimalist Plain-Text Matrix Formatting
       final buffer = StringBuffer()
-        ..writeln('+----------------------------------------------------------------------+')
+        ..writeln(
+            '+----------------------------------------------------------------------+')
         ..writeln('| TELEMETRY REPORT: $classification')
-        ..writeln('+----------------------------------------------------------------------+')
+        ..writeln(
+            '+----------------------------------------------------------------------+')
         ..writeln('| Target Route: $screenName')
-        ..writeln('| Budget: ${frameBudgetMs.toStringAsFixed(2)} ms (Target FPS: ${(1000.0 / frameBudgetMs).toStringAsFixed(0)})')
-        ..writeln('| Frame Render Time: ${totalRenderMs.toStringAsFixed(2)} ms (Overrun: ${overrunPct.toStringAsFixed(1)}%, +${excessMs.toStringAsFixed(2)} ms)')
+        ..writeln(
+            '| Budget: ${frameBudgetMs.toStringAsFixed(2)} ms (Target FPS: ${(1000.0 / frameBudgetMs).toStringAsFixed(0)})')
+        ..writeln(
+            '| Frame Render Time: ${totalRenderMs.toStringAsFixed(2)} ms (Overrun: ${overrunPct.toStringAsFixed(1)}%, +${excessMs.toStringAsFixed(2)} ms)')
         ..writeln('| Thread Breakdowns:')
-        ..writeln('|   - UI Thread (CPU Build):  ${cpuBuildMs.toStringAsFixed(2)} ms')
-        ..writeln('|   - Raster Thread (GPU):   ${gpuRasterMs.toStringAsFixed(2)} ms')
-        ..writeln('+----------------------------------------------------------------------+')
+        ..writeln(
+            '|   - UI Thread (CPU Build):  ${cpuBuildMs.toStringAsFixed(2)} ms')
+        ..writeln(
+            '|   - Raster Thread (GPU):   ${gpuRasterMs.toStringAsFixed(2)} ms')
+        ..writeln(
+            '+----------------------------------------------------------------------+')
         ..writeln('| Bottleneck Analysis:')
         ..writeln('| $bottleneckAdvice')
-        ..writeln('+----------------------------------------------------------------------+');
+        ..writeln(
+            '+----------------------------------------------------------------------+');
 
       final String logMsg = buffer.toString();
       developer.log(logMsg, name: 'jank_scout');

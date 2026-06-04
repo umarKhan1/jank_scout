@@ -1,7 +1,8 @@
 name: jank_scout
 description: A performance-optimized, zero-dependency frame drop (jank) interception package for local Flutter development.
 version: 0.0.1
-publish_to: 'none'
+repository: https://github.com/umarKhan1/jank_scout
+issue_tracker: https://github.com/umarKhan1/jank_scout/issues
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

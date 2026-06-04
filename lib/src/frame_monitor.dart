@@ -94,7 +94,8 @@ class JankScout {
 
       if (totalRenderMs > _frameBudgetMs) {
         final double cpuBuildMs = timing.buildDuration.inMicroseconds / 1000.0;
-        final double gpuRasterMs = timing.rasterDuration.inMicroseconds / 1000.0;
+        final double gpuRasterMs =
+            timing.rasterDuration.inMicroseconds / 1000.0;
 
         // Hand off metrics to the logger.
         LoggerUtility.logJank(
@@ -150,4 +151,3 @@ class JankScoutObserver extends NavigatorObserver {
     _updateActiveRoute(previousRoute);
   }
 }
-
